@@ -45,6 +45,11 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
+    active_model_serializers (0.10.15)
+      actionpack (>= 4.1)
+      activemodel (>= 4.1)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (7.2.2.1)
       activesupport (= 7.2.2.1)
       globalid (>= 0.3.6)
@@ -72,27 +77,17 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.3)
     base64 (0.3.0)
     benchmark (0.4.1)
     bigdecimal (3.2.2)
-    bindex (0.8.1)
     bootsnap (1.18.6)
       msgpack (~> 1.2)
     brakeman (7.0.2)
       racc
     builder (3.3.0)
-    capybara (3.40.0)
-      addressable
-      matrix
-      mini_mime (>= 0.1.3)
-      nokogiri (~> 1.11)
-      rack (>= 1.6.0)
-      rack-test (>= 0.6.3)
-      regexp_parser (>= 1.5, < 3.0)
-      xpath (~> 3.2)
+    case_transform (0.2)
+      activesupport
     cgi (0.5.0)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
@@ -108,7 +103,6 @@ GEM
     drb (2.2.3)
     erb (4.0.4)
       cgi (>= 0.3.3)
-    error_highlight (0.7.0)
     erubi (1.13.1)
     faraday (2.13.1)
       faraday-net_http (>= 2.0, < 3.5)
@@ -126,10 +120,8 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.13.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     json (2.12.2)
+    jsonapi-renderer (0.2.2)
     jwt (2.10.1)
       base64
     language_server-protocol (3.17.0.5)
@@ -144,7 +136,6 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
-    matrix (0.4.2)
     mini_mime (1.1.5)
     minitest (5.25.5)
     msgpack (1.8.0)
@@ -195,11 +186,13 @@ GEM
     psych (5.2.6)
       date
       stringio
-    public_suffix (6.0.2)
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.16)
+    rack-cors (3.0.0)
+      logger
+      rack (>= 3.0.14)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -248,7 +241,6 @@ GEM
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
-    rexml (3.4.1)
     rubocop (1.76.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -278,25 +270,10 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
-    rubyzip (2.4.1)
     securerandom (0.4.1)
-    selenium-webdriver (4.32.0)
-      base64 (~> 0.2)
-      logger (~> 1.4)
-      rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
-      websocket (~> 1.0)
     snaky_hash (2.0.3)
       hashie (>= 0.1.0, < 6)
       version_gem (>= 1.1.8, < 3)
-    sprockets (4.2.2)
-      concurrent-ruby (~> 1.0)
-      logger
-      rack (>= 2.2.4, < 4)
-    sprockets-rails (3.5.2)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      sprockets (>= 3.0.0)
     sqlite3 (2.7.0-x64-mingw-ucrt)
     sqlite3 (2.7.0-x86_64-linux-gnu)
     stringio (3.1.7)
@@ -312,18 +289,10 @@ GEM
     uri (1.0.3)
     useragent (0.16.11)
     version_gem (1.1.8)
-    web-console (4.2.1)
-      actionview (>= 6.0.0)
-      activemodel (>= 6.0.0)
-      bindex (>= 0.4.0)
-      railties (>= 6.0.0)
-    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    xpath (3.2.0)
-      nokogiri (~> 1.8)
     zeitwerk (2.6.18)
 
 PLATFORMS
@@ -331,22 +300,18 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_model_serializers
   bootsnap
   brakeman
-  capybara
   debug
   dotenv-rails
-  error_highlight (>= 0.4.0)
-  jbuilder
   omniauth-fitbit
   puma (>= 5.0)
+  rack-cors
   rails (~> 7.2.2, >= 7.2.2.1)
   rubocop-rails-omakase
-  selenium-webdriver
-  sprockets-rails
   sqlite3 (>= 1.4)
   tzinfo-data
-  web-console
 
 BUNDLED WITH
    2.3.26
