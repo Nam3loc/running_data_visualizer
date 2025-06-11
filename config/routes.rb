@@ -10,18 +10,20 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # Defines the root path route ("/")
-  root 'dashboard#index'
+  root "dashboard#index"
+
+  # Fitbit OAuth routes
+  get "auth/fitbit", to: "fitbit_auth#new"
+  get "auth/fitbit/callback", to: "fitbit_auth#callback"
+  get "auth/fitbit/failure", to: "fitbit_auth#failure"
+
+  # Dashboard route
+  get "dashboard", to: "dashboard#index"
 
   # API routes
   namespace :api do
-    namespace :fitbit do
-      get 'data', to: 'data#index'
-    end
+    get "data", to: "data#index"
   end
 
-  # Auth routes
-  get '/auth/fitbit/callback', to: 'fitbit_auth#callback'
-  get '/auth/failure', to: 'fitbit_auth#failure'
-  
-  resources :dashboard, only: [:index]
+  resources :dashboard, only: [ :index ]
 end
