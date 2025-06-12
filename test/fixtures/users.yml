@@ -1,7 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  email: MyString
+  email: user@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  fitbit_id: "123456"
+  fitbit_token: "valid_token"
+  fitbit_refresh_token: "valid_refresh_token"
+  fitbit_token_expires_at: <%= 1.hour.from_now %>
 
 two:
-  email: MyString
+  email: another@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  fitbit_id: "789012"
+  fitbit_token: "expired_token"
+  fitbit_refresh_token: "expired_refresh_token"
+  fitbit_token_expires_at: <%= 1.hour.ago %>

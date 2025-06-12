@@ -30,7 +30,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.2", require: "image_processing/mini_magick"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax requests possible
 gem "rack-cors"
@@ -42,18 +42,30 @@ gem "omniauth-fitbit"
 # Use HTTParty for making HTTP requests
 gem "httparty"
 
+# Use sprockets for asset pipeline
+gem "sprockets-rails"
+
+# Use sqlite3 as the database for Active Record
+gem "sqlite3", "~> 1.4"
+
+# HTTP client
+gem "http", "~> 5.1"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
-  
+
   # Security audit for gems
   gem "bundler-audit"
-  
+
   # Static analysis for security vulnerabilities
   gem "brakeman"
-  
+
   # Omakase Ruby styling
   gem "rubocop-rails-omakase", require: false
+
+  gem "vcr"
+  gem "webmock"
 end
 
 group :development do

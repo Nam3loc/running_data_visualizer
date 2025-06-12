@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "dashboard#index"
 
+  # Session routes
+  post "login", to: "sessions#create", as: :session
+  delete "logout", to: "sessions#destroy"
+
   # Fitbit OAuth routes
   get "auth/fitbit", to: "fitbit_auth#new"
   get "auth/fitbit/callback", to: "fitbit_auth#callback"
@@ -23,6 +27,11 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     get "data", to: "data#index"
+    namespace :fitbit do
+      get "data/steps", to: "data#steps"
+      get "data/heart_rate", to: "data#heart_rate"
+      get "data/sleep", to: "data#sleep"
+    end
   end
 
   resources :dashboard, only: [ :index ]

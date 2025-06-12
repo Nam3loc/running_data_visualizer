@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_11_204627) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_12_222140) do
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.datetime "created_at", null: false
@@ -18,5 +18,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_11_204627) do
     t.string "fitbit_token"
     t.string "fitbit_refresh_token"
     t.datetime "fitbit_token_expires_at"
+    t.string "fitbit_id"
+    t.string "password_digest"
   end
 end
