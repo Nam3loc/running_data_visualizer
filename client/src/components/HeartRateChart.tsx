@@ -22,14 +22,25 @@ export const HeartRateChart: React.FC<HeartRateChartProps> = ({ date }) => {
     return <div>Error loading heart rate data: {(error as Error).message}</div>;
   }
 
-  if (!data?.data) {
+  //If no heartRate data is given or is the heartRate data is empty
+  if (!data?.data || !data.data['activities-heart-intraday']?.dataset?.length) {
     return <div>No heart rate data available</div>;
   }
 
-  const chartData: ChartDataPoint[] = data.data['activities-heart-intraday']?.dataset.map((item) => ({
-    time: item.time,
-    heartRate: item.value,
-  })) || [];
+  const rawDataset = data.data['activities-heart-intraday']?.dataset || [];
+
+  const cleanedDataset: ChartDataPoint[] = rawDataset.map((data) => {
+    if (typeof data.value !== 'number' || isNaN(data.value)) {
+      throw new Error(`Invalid heart rate data: ${data.value}`);
+    }
+  
+    return {
+      time: data.time,
+      heartRate: data.value,
+    };
+  });
+  
+  const chartData: ChartDataPoint[] = cleanedDataset;
 
   return (
     <div style={{ width: '100%', height: 300 }}>

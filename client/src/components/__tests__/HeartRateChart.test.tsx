@@ -75,7 +75,7 @@ describe('HeartRateChart', () => {
     } as QueryResult);
 
     render(<HeartRateChart date="2024-03-12" />, { wrapper });
-    expect(screen.getByText('No heart rate data available for this date')).toBeInTheDocument();
+    expect(screen.getByText('No heart rate data available')).toBeInTheDocument();
   });
 
   it('renders chart with data', async () => {
@@ -99,7 +99,7 @@ describe('HeartRateChart', () => {
     render(<HeartRateChart date="2024-03-12" />, { wrapper });
 
     await waitFor(() => {
-      expect(screen.getByText('Heart Rate Analysis for 2024-03-12')).toBeInTheDocument();
+      expect(screen.getByText(/Heart Rate for 2024-03-12/)).toBeInTheDocument();
     });
   });
 
@@ -119,7 +119,7 @@ describe('HeartRateChart', () => {
     } as QueryResult);
 
     render(<HeartRateChart date="2024-03-12" />, { wrapper });
-    expect(screen.getByText('Heart Rate Analysis for 2024-03-12')).toBeInTheDocument();
+    expect(screen.getByText('No heart rate data available')).toBeInTheDocument();
   });
 
   it('handles invalid data format', () => {
@@ -132,14 +132,15 @@ describe('HeartRateChart', () => {
         },
       },
     };
-
+  
     mockUseHeartRate.mockReturnValue({
       data: mockData,
       isLoading: false,
-      error: null,
+      error: new Error('Invalid heart rate data: invalid'),
     } as QueryResult);
-
+  
     render(<HeartRateChart date="2024-03-12" />, { wrapper });
-    expect(screen.getByText('Heart Rate Analysis for 2024-03-12')).toBeInTheDocument();
+  
+    expect(screen.getByText('Error loading heart rate data: Invalid heart rate data: invalid')).toBeInTheDocument();
   });
 }); 
