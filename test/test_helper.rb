@@ -25,10 +25,10 @@ VCR.configure do |config|
   config.ignore_localhost = true
   config.filter_sensitive_data("<FITBIT_TOKEN>") { ENV["FITBIT_TOKEN"] }
   config.filter_sensitive_data("<FITBIT_REFRESH_TOKEN>") { ENV["FITBIT_REFRESH_TOKEN"] }
-  config.allow_http_connections_when_no_cassette = false
+  config.allow_http_connections_when_no_cassette = true
   config.default_cassette_options = {
     record: :once,
-    match_requests_on: [:method, :uri, :body]
+    match_requests_on: [ :method, :uri, :body ]
   }
 end
 

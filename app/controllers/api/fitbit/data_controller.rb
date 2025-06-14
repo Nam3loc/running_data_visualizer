@@ -6,7 +6,9 @@ module Api
 
       def steps
         date = params[:date]
-        return render json: { error: "Date parameter is required" }, status: :bad_request unless date
+        unless date
+          return render json: { error: "Date parameter is required" }, status: :bad_request
+        end
 
         begin
           data = FitbitClient.new(current_user).get_steps(date)
@@ -43,8 +45,8 @@ module Api
       private
 
       def require_fitbit_connection
-        unless current_user.fitbit_token.present?
-          render json: { error: "Fitbit account not connected" }, status: :unauthorized
+        unless current_user.fitbit_token.present? && current_user.fitbit_refresh_token.present? && current_user.fitbit_token_expires_at.present?
+          render json: { error: "Fitbit account not connected" }, status: :unauthorized and return
         end
       end
 
@@ -54,6 +56,8 @@ module Api
           render json: { error: error.message }, status: :too_many_requests
         when /Network error/
           render json: { error: error.message }, status: :service_unavailable
+        when /Unauthorized/
+          render json: { error: error.message }, status: :unauthorized
         else
           render json: { error: error.message }, status: :bad_request
         end

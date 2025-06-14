@@ -2,6 +2,8 @@ require "http"
 
 class FitbitClient
   class Error < StandardError; end
+  class UnauthorizedError < Error; end
+  class RateLimitError < FitbitClient::Error; end
 
   BASE_URL = "https://api.fitbit.com/1/user/-"
 
@@ -27,19 +29,40 @@ class FitbitClient
   private
 
   def make_request(endpoint)
-    response = HTTP.headers(auth_headers)
-                  .get("https://api.fitbit.com/1/user/-/#{endpoint}.json")
-    
-    case response.code
-    when 200
-      JSON.parse(response.body.to_s)
-    when 401
-      refresh_token
-      retry
-    else
-      raise "Fitbit API error: #{response.code}"
+    tries ||= 0
+
+    begin
+      response = HTTP.headers(auth_headers)
+                     .get("https://api.fitbit.com/1/user/-/#{endpoint}.json")
+
+      case response.code
+      when 200
+        JSON.parse(response.body.to_s)
+      when 401
+        raise UnauthorizedError
+      when 429
+        raise RateLimitError
+      else
+        raise FitbitClient::Error, "Fitbit API error: #{response.code}"
+      end
+
+    rescue UnauthorizedError
+      tries += 1
+      if tries <= 1
+        refresh_token
+        retry
+      else
+        raise
+      end
+
+    rescue HTTP::TimeoutError => e
+      raise FitbitClient::Error, "Request timed out: #{e.message}"
+
+    rescue StandardError => e
+      raise FitbitClient::Error, "Request failed: #{e.message}"
     end
   end
+
 
   def auth_headers
     {
@@ -71,4 +94,3 @@ class FitbitClient
     end
   end
 end
-
